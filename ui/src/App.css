@@ -1,11 +1,11 @@
-.App {
+/* .App {
   text-align: center;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
+} */
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -13,15 +13,29 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
+/* .App-header {
+  background-color: #a1a4a8;
   min-height: 100vh;
+  max-width: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+} */
+.app {
+  background-color: #ebe4e4;
+  row-gap: 5px;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: rgb(12, 12, 12);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .App-link {
@@ -35,4 +49,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+.card {
+  margin-bottom: 4rem;
+  background-color: rgb(247, 247, 247);
+  width: 100%;
 }

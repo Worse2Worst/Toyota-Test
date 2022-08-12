@@ -2,12 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import AddUser from './functions/AddUser';
+import DeleteUser from './functions/DeleteUser';
 import reportWebVitals from './reportWebVitals';
+// Import React Bootstraps
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AddUser />
+    <DeleteUser />
   </React.StrictMode>
 );
 

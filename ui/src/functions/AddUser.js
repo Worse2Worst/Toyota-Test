@@ -1,9 +1,9 @@
-import './App.css';
+import '../App.css';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
-function App() {
+function AddUser() {
   return (
     <div className='app'>
     <div className='card'>
@@ -30,4 +30,4 @@ function App() {
     );
 }
 
-export default App;
+export default AddUser;
