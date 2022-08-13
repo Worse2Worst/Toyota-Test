@@ -43,15 +43,47 @@ def get_users():
 
 
 @app.route('/users', methods = ['POST'])
-def add_user():
-    name = request.json['name']
-    email = request.json['email']
+def update_user():
+    operation = request.args.get('type', None)
+    if not operation or operation not in {'add', 'mod', 'del'}:
+        # TODO Handle this
+        return None
+    
+    if operation == 'add':
+        name = request.json['name']
+        email = request.json['email']
+        return add_user(name, email)
+
+    if operation == 'mod':
+        name = request.json['name']
+        email = request.json['email']
+        return modify_user(name, email)
+
+    if operation == 'del':
+        name = request.json['name']
+        email = request.json['email']
+        return delete_user(name, email)
+    
+
+
+def add_user(name, email):
     users = Users(name, email)
     db.session.add(users)
     db.session.commit()
     return user_schema.jsonify(users)
+
+
+def modify_user(name, email):
+    users = Users(name, email)
+    db.session.add(users)
+    db.session.commit()
+    return user_schema.jsonify(users)
+
+def delete_user(id):
+    user = Users.query.get(requested_id)
+    return user_schema.jsonify(users)
     
 
 if __name__ == '__main__':
-    # TODO 
+    # TODO, remove debug mode, when in production
     app.run(debug=True)
