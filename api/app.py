@@ -55,14 +55,13 @@ def update_user():
         return add_user(name, email)
 
     if operation == 'mod':
-        name = request.json['name']
-        email = request.json['email']
-        return modify_user(name, email)
+        new_name = request.json['name']
+        requested_id = request.json['id']
+        return modify_user(requested_id, new_name)
 
     if operation == 'del':
-        name = request.json['name']
-        email = request.json['email']
-        return delete_user(name, email)
+        requested_id = request.json['id']
+        return delete_user(requested_id)
     
 
 
@@ -73,15 +72,17 @@ def add_user(name, email):
     return user_schema.jsonify(users)
 
 
-def modify_user(name, email):
-    users = Users(name, email)
-    db.session.add(users)
-    db.session.commit()
-    return user_schema.jsonify(users)
-
-def delete_user(id):
+def modify_user(requested_id, new_name):
     user = Users.query.get(requested_id)
-    return user_schema.jsonify(users)
+    user.name = new_name
+    db.session.commit()
+    return user_schema.jsonify(user)
+
+def delete_user(requested_id):
+    user = Users.query.get(requested_id)
+    db.session.delete(user)
+    db.session.commit()
+    return user_schema.jsonify(user)
     
 
 if __name__ == '__main__':
