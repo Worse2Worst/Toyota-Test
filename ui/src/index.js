@@ -4,9 +4,9 @@ import './index.css';
 import App from './App';
 import AddUser from './functions/AddUser';
 import DeleteUser from './functions/DeleteUser';
+import ModifyUser from './functions/ModifyUser';
 import GetUser from './functions/GetUser';
 import reportWebVitals from './reportWebVitals';
-// Import React Bootstraps
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -16,6 +16,7 @@ root.render(
   <React.StrictMode>
     <AddUser />
     <GetUser />
+    <ModifyUser />
     <DeleteUser />
   </React.StrictMode>
 );
