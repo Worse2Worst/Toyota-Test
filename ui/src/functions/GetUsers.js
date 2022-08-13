@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const baseURL = "http://127.0.0.1:5000/v1/users?id=all";
 
-function GetUser() {
+function GetUsers() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -22,13 +22,13 @@ function GetUser() {
       .then(resp => resp.json())
       .then(resp => setUsers(resp))
       .catch(error => console.log(error))
-  })
+  }, [])
 
   return (
     <div className='app'>
       <div className='card'>
         <Card>
-          <Card.Header>Get User</Card.Header>
+          <Card.Header>Get Users</Card.Header>
           <Card.Body>
             <Table striped bordered hover variant="dark">
               <thead>
@@ -55,7 +55,7 @@ function GetUser() {
               </tbody>
             </Table>
             <Button variant="info" type="submit">
-              Get User
+              Get Users
             </Button>
           </Card.Body>
         </Card>
@@ -64,4 +64,4 @@ function GetUser() {
   );
 }
 
-export default GetUser;
+export default GetUsers;
