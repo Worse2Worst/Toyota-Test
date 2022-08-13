@@ -30,7 +30,7 @@ user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
 
-@app.route('/users', methods = ['GET'])
+@app.route('/v1/users', methods = ['GET'])
 def get_users():
     requested_id = request.args.get('id', None)
     if not requested_id or requested_id == 'all':
@@ -42,7 +42,7 @@ def get_users():
         return user_schema.jsonify(user)
 
 
-@app.route('/users', methods = ['POST'])
+@app.route('/v1/users', methods = ['POST'])
 def update_user():
     operation = request.args.get('type', None)
     if not operation or operation not in {'add', 'mod', 'del'}:
