@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import UsersList from './UsersList';
 
 
 
@@ -30,30 +30,7 @@ function GetUsers() {
         <Card>
           <Card.Header>Get Users</Card.Header>
           <Card.Body>
-            <Table striped bordered hover variant="dark">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  users.map((user, index) => {
-                    return (
-                      <tr>
-                        <td>{index}</td>
-                        <td>{user.id}</td>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                      </tr>
-                    )
-                  })
-                }
-              </tbody>
-            </Table>
+            <UsersList users = {users}/>
             <Button variant="info" type="submit">
               Get Users
             </Button>
