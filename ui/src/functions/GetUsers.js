@@ -10,18 +10,6 @@ import api from '../api/axios';
 function GetUsers() {
   const [users, setUsers] = useState([]);
 
-  // useEffect(() => {
-  //   fetch(baseURL, {
-  //     'method': 'GET',
-  //     headers: {
-  //       'Content-Type': 'applications/json'
-  //     }
-  //   })
-  //     .then(resp => resp.json())
-  //     .then(resp => setUsers(resp))
-  //     .catch(error => console.log(error))
-  // }, [])
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
