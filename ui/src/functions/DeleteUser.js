@@ -2,8 +2,25 @@ import '../App.css';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
+import React, { useState, useEffect } from 'react';
 
-function AddUser() {
+
+const baseURL = "http://127.0.0.1:5000/v1/users";
+
+function DeleteUser() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch(baseURL + "?id=all", {
+      'method': 'GET',
+      headers: {
+        'Content-Type': 'applications/json'
+      }
+    })
+      .then(resp => resp.json())
+      .then(resp => setUsers(resp))
+      .catch(error => console.log(error))
+  }, [])
   return (
     <div className='app'>
     <div className='card'>
@@ -17,12 +34,14 @@ function AddUser() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+      {users.map(user => {
+          return (
+        // <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+        <Dropdown.Item>{user.id}</Dropdown.Item>
+          )
+         })}
       </Dropdown.Menu>
     </Dropdown>
-    {/* DROP DOWN  */}
 
     <Button variant="danger" type="submit">
         Delete User
@@ -34,4 +53,4 @@ function AddUser() {
     );
 }
 
-export default AddUser;
+export default DeleteUser;

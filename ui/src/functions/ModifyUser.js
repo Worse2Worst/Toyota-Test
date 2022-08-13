@@ -28,7 +28,6 @@ function ModifyUser() {
     <Card>
     <Card.Header>Modify User's Name</Card.Header>
     <Card.Body>
-     {/*TODO, have to look into dropdown thing, change drop down menu too */}
     <Dropdown>
       <Dropdown.Toggle variant="light" id="dropdown-basic">
         Please select id to modify the user's name
