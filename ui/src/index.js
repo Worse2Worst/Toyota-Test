@@ -5,7 +5,7 @@ import App from './App';
 import AddUser from './functions/AddUser';
 import DeleteUser from './functions/DeleteUser';
 import ModifyUser from './functions/ModifyUser';
-import GetUsers from './functions/GetUsers';
+import GetUser from './functions/GetUser';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,7 +19,7 @@ root.render(
     <h1>Home</h1>
     </div>
     <AddUser />
-    <GetUsers />
+    <GetUser />
     <ModifyUser />
     <DeleteUser />
   </React.StrictMode>
