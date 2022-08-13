@@ -4,6 +4,7 @@ import Table from 'react-bootstrap/Table';
 
 function UsersList(props) {
   return (
+    <div>
     <Table striped bordered hover variant="dark">
               <thead>
                 <tr>
@@ -28,6 +29,7 @@ function UsersList(props) {
                 }
               </tbody>
     </Table>
+    </div>
   );
 }
 
