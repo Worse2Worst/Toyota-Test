@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 import re
 
 
-app = Flask(__name__, static_folder='../ui/build', static_url_path='')
+app = Flask(__name__, static_folder='../build', static_url_path='')
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/toyota_test_db'
