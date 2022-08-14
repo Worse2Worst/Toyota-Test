@@ -11,6 +11,7 @@ function DeleteUser() {
   
   const [users, setUsers] = useState([]);
   const [alert, setAlert] = useState(false);
+  const [successAlert, setSuccessAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState([]);
   const [ID, setID] = useState(-1);
   const [dropDownValue, setDropDownValue] = useState("Please select id to delete...");
@@ -46,6 +47,7 @@ function DeleteUser() {
     if (ID === -1) {
       setAlertMessage("Please select an ID to delete!!");
       setAlert(true);
+      return;
     }
     // Calling the API
     const jsonBody = {
@@ -65,6 +67,8 @@ function DeleteUser() {
       if (response.data.hasOwnProperty("error")) {
         setAlertMessage(response.data.error);
         setAlert(true);
+      } else {
+        setSuccessAlert(true);
       }
     } catch (err) {
         if (err.response) {
@@ -94,7 +98,14 @@ function DeleteUser() {
       {alertMessage}
       </p>
       </Alert>
-    <Dropdown>
+
+      <Alert show={successAlert} variant='success' onClose={() => setSuccessAlert(false)} dismissible>
+        <Alert.Heading>Success!!</Alert.Heading>
+        <p>
+        Delete a member from the database.
+        </p>
+      </Alert>
+    <Dropdown onClick={fetchUsers}>
     {/* <Dropdown onSelect={onIDInput} onClick={(e) => this.changeValue(e.target.textContent)}> */}
       <Dropdown.Toggle variant="light" id="dropdown-basic">
         {dropDownValue}
