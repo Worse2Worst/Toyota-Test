@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 CORS(app)
@@ -48,40 +49,63 @@ def get_users():
 def update_user():
     operation = request.args.get('type', None)
     if not operation or operation not in {'add', 'mod', 'del'}:
-        # TODO Handle this
-        return None
+        return {
+            "error": "Operation not recognized. Please select from [add, mod, del]"
+        }
     
     if operation == 'add':
-        name = request.json['name']
-        email = request.json['email']
+        name = request.json.get('name')
+        email = request.json.get('email')
+        if not name or not email:
+            error_message = 'Please specify "name" and "email" fields.'
+            return {"error": error_message}
         return add_user(name, email)
 
     if operation == 'mod':
-        new_name = request.json['name']
-        requested_id = request.json['id']
+        new_name = request.json.get('name')
+        requested_id = request.json.get('id')
+        if not new_name or not requested_id:
+            error_message = 'Please specify "name" and "id" fields.'
+            return {"error": error_message}
         return modify_user(requested_id, new_name)
 
     if operation == 'del':
-        requested_id = request.json['id']
+        requested_id = request.json.get('id')
+        if not new_name or not requested_id:
+            error_message = 'Please specify "id" field.'
+            return {"error": error_message}
         return delete_user(requested_id)
     
 
 
 def add_user(name, email):
     users = Users(name, email)
-    db.session.add(users)
-    db.session.commit()
+    try:
+        db.session.add(users)
+        db.session.commit()
+    except IntegrityError:
+        return {
+            "error": "The email is already existed."
+        }
     return user_schema.jsonify(users)
 
 
 def modify_user(requested_id, new_name):
     user = Users.query.get(requested_id)
+    if not user:
+        return {
+            "error": "User not found. Please make sure the ID exists."
+        }
     user.name = new_name
     db.session.commit()
     return user_schema.jsonify(user)
 
 def delete_user(requested_id):
     user = Users.query.get(requested_id)
+    if not user:
+        return {
+            "error": "User not found. Please make sure the ID exists."
+        }
     db.session.delete(user)
     db.session.commit()
     return user_schema.jsonify(user)
