@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
+import Alert from 'react-bootstrap/Alert';
 
 
 function AddUser() {
@@ -11,6 +12,8 @@ function AddUser() {
   const [users, setUsers] = useState([]);
   const [userName, setUserName] = useState([]);
   const [email, setEmail] = useState([]);
+  const [alert, setAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState([]);
 
   const onNameInput = ({target:{value}}) => setUserName(value);
   const onEmailInput = ({target:{value}}) => setEmail(value);
@@ -38,8 +41,6 @@ function AddUser() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(userName);
-    console.log(email);
     // Calling the API
     const jsonBody = {
       'name': userName,
@@ -54,21 +55,27 @@ function AddUser() {
         'type': 'add'
       }
     }
-    try{
+    try {
       const response = await api.post('/users', jsonBody, config);
+      if (response.data.hasOwnProperty("error")) {
+        setAlertMessage(response.data.error);
+        setAlert(true);
+      }
     } catch (err) {
         if (err.response) {
           // Not in the 200 response range 
           console.log(err.response.data);
           console.log(err.response.status);
           console.log(err.response.headers);
+          setAlertMessage(err.response);
+          setAlert(true)
         } else {
           console.log(`Error: ${err.message}`);
+          setAlertMessage(err.message);
+          setAlert(true);
         }
     }
   }
-
-
 
   return (
     <div className='app'>
@@ -76,6 +83,12 @@ function AddUser() {
     <Card>
     <Card.Header>Add User</Card.Header>
     <Card.Body>
+    <Alert show={alert} variant='danger' onClose={() => setAlert(false)} dismissible>
+        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+        <p>
+        {alertMessage}
+        </p>
+    </Alert>
       <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formAddName">
           <Form.Control 
