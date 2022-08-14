@@ -10,7 +10,7 @@ import os
 app = Flask(__name__, static_folder='../build', static_url_path='')
 CORS(app)
 
-database_url = os.environ.get('DATABASE_URL')
+database_url = os.environ.get('DATABASE_URL', 'postgresql://postgres:password@localhost/toyota_test_db')
 if 'postgres://' in database_url:
     database_url = database_url.replace('postgres://', 'postgresql://')
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url 
@@ -129,5 +129,5 @@ def serve():
     
     
 if __name__ == '__main__':
-    # TODO, remove debug mode, when in production
-    app.run()
+    debug = (os.environ.get('ENVIRONEMENT') != 'production')
+    app.run(debug=debug)
