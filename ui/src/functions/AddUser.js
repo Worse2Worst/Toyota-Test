@@ -13,6 +13,7 @@ function AddUser() {
   const [userName, setUserName] = useState([]);
   const [email, setEmail] = useState([]);
   const [alert, setAlert] = useState(false);
+  const [successAlert, setSuccessAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState([]);
 
   const onNameInput = ({target:{value}}) => setUserName(value);
@@ -61,6 +62,9 @@ function AddUser() {
         setAlertMessage(response.data.error);
         setAlert(true);
       }
+      else {
+        setSuccessAlert(true);
+      }
     } catch (err) {
         if (err.response) {
           // Not in the 200 response range 
@@ -87,6 +91,12 @@ function AddUser() {
         <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
         <p>
         {alertMessage}
+        </p>
+    </Alert>
+    <Alert show={successAlert} variant='success' onClose={() => setSuccessAlert(false)} dismissible>
+        <Alert.Heading>Success!!</Alert.Heading>
+        <p>
+        Added a member into the database.
         </p>
     </Alert>
       <Form onSubmit={handleSubmit}>

@@ -12,6 +12,8 @@ function DeleteUser() {
   const [users, setUsers] = useState([]);
   const [alert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState([]);
+  const [ID, setID] = useState(-1);
+  const [dropDownValue, setDropDownValue] = useState("Please select id to delete...");
 
   const fetchUsers = async () => {
     try {
@@ -24,8 +26,12 @@ function DeleteUser() {
           console.log(err.response.data);
           console.log(err.response.status);
           console.log(err.response.headers);
+          setAlertMessage(err.response);
+          setAlert(true);
         } else {
           console.log(`Error: ${err.message}`);
+          setAlertMessage(err.message);
+          setAlert(true);
         }
     }
   }
@@ -33,33 +39,83 @@ function DeleteUser() {
   useEffect(() => {
     fetchUsers();
   }, [])
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(ID);
+    if (ID === -1) {
+      setAlertMessage("Please select an ID to delete!!");
+      setAlert(true);
+    }
+    // Calling the API
+    const jsonBody = {
+      'id': ID
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        'type': 'del'
+      }
+    }
+    try {
+      const response = await api.post('/users', jsonBody, config);
+      if (response.data.hasOwnProperty("error")) {
+        setAlertMessage(response.data.error);
+        setAlert(true);
+      }
+    } catch (err) {
+        if (err.response) {
+          // Not in the 200 response range 
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+          setAlertMessage(err.response);
+          setAlert(true)
+        } else {
+          console.log(`Error: ${err.message}`);
+          setAlertMessage(err.message);
+          setAlert(true);
+        }
+    }
+  }
+
   return (
     <div className='app'>
     <div className='card'>
     <Card>
     <Card.Header>Delete User</Card.Header>
     <Card.Body>
-     {/*TODO, have to look into dropdown thing, change drop down menu too */}
+      <Alert show={alert} variant='danger' onClose={() => setAlert(false)} dismissible>
+      <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+      <p>
+      {alertMessage}
+      </p>
+      </Alert>
     <Dropdown>
+    {/* <Dropdown onSelect={onIDInput} onClick={(e) => this.changeValue(e.target.textContent)}> */}
       <Dropdown.Toggle variant="light" id="dropdown-basic">
-        Please select id to delete
+        {dropDownValue}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
       {users.map(user => {
           return (
-        // <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item>{user.id}</Dropdown.Item>
+        <Dropdown.Item onClick={() => {setID(user.id); setDropDownValue(user.id); }}>
+          {user.id}
+          </Dropdown.Item>
           )
          })}
       </Dropdown.Menu>
     </Dropdown>
-
-    <Button variant="danger" type="submit">
+    <Button variant="danger" type="submit" onClick={handleSubmit}>
         Delete User
     </Button>
     </Card.Body>
     </Card>
+    
     </div>
     </div>
     );
