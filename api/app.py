@@ -70,14 +70,14 @@ def update_user():
     if operation == 'mod':
         new_name = request.json.get('name')
         requested_id = request.json.get('id')
-        if not requested_id:
+        if not new_name or not requested_id:
             error_message = 'Please specify "name" and "id" fields.'
             return {"error": error_message}
         return modify_user(requested_id, new_name)
 
     if operation == 'del':
         requested_id = request.json.get('id')
-        if not new_name or not requested_id:
+        if not requested_id:
             error_message = 'Please specify "id" field.'
             return {"error": error_message}
         return delete_user(requested_id)
