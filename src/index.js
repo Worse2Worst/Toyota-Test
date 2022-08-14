@@ -18,10 +18,10 @@ root.render(
     <div className='app'>
     <h1>Home</h1>
     </div>
-    <AddUser />
+    {/* <AddUser />
     <GetUsers />
     <ModifyUser />
-    <DeleteUser />
+    <DeleteUser /> */}
   </React.StrictMode>
 );
 
