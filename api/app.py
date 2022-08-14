@@ -10,7 +10,6 @@ import os
 app = Flask(__name__, static_folder='../build', static_url_path='')
 CORS(app)
 
-# This is bad practice, just doing this for the purpose of the test.
 database_url = os.environ.get('DATABASE_URL')
 if 'postgres://' in database_url:
     database_url = database_url.replace('postgres://', 'postgresql://')
