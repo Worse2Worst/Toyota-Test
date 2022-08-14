@@ -1,12 +1,12 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from sqlalchemy.exc import IntegrityError
 import re
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../ui/build', static_url_path='')
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/toyota_test_db'
@@ -36,6 +36,7 @@ users_schema = UserSchema(many=True)
 
 
 @app.route('/v1/users', methods = ['GET'])
+@cross_origin()
 def get_users():
     requested_id = request.args.get('id', None)
     if not requested_id or requested_id == 'all':
@@ -48,6 +49,7 @@ def get_users():
 
 
 @app.route('/v1/users', methods = ['POST'])
+@cross_origin()
 def update_user():
     operation = request.args.get('type', None)
     if not operation or operation not in {'add', 'mod', 'del'}:
@@ -115,8 +117,13 @@ def delete_user(requested_id):
     db.session.delete(user)
     db.session.commit()
     return user_schema.jsonify(user)
-    
 
+@app.route('/')
+@cross_origin()
+def serve():
+    return send_from_directory()
+    
+    
 if __name__ == '__main__':
     # TODO, remove debug mode, when in production
     app.run(debug=True)
