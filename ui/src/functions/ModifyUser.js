@@ -5,11 +5,14 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import api from '../api/axios';
+import Alert from 'react-bootstrap/Alert';
 
 
 function ModifyUser() {
   
   const [users, setUsers] = useState([]);
+  const [alert, setAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState([]);
 
   const fetchUsers = async () => {
     try {
