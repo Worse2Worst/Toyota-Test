@@ -49,11 +49,17 @@ function AddUser() {
     <Card.Body>
       <Form>
       <Form.Group className="mb-3" controlId="formAddName">
-          <Form.Control type="text" placeholder="Please input your name..." />
+          <Form.Control 
+            type="text" 
+            placeholder="Please input your name..." 
+            />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formAddEmail">
-          <Form.Control type="email" placeholder="Please input your email..." />
+          <Form.Control 
+          type="email" 
+          placeholder="Please input your email..."
+          />
         </Form.Group>
       
         <Button variant="primary" type="submit">
