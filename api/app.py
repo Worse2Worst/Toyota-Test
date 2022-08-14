@@ -9,7 +9,8 @@ import re
 app = Flask(__name__, static_folder='../build', static_url_path='')
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/toyota_test_db'
+# This is bad practice, just doing this for the purpose of the test.
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres://ffvghpstpyetvu:a31e6a944400fdcb01afcf5f67878b929c72d7a06130a8c382ed342b243e40b7@ec2-3-224-8-189.compute-1.amazonaws.com:5432/d7ds1o0n8oelip'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
