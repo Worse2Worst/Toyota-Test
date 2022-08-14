@@ -126,4 +126,4 @@ def serve():
     
 if __name__ == '__main__':
     # TODO, remove debug mode, when in production
-    app.run(debug=True)
+    app.run()
