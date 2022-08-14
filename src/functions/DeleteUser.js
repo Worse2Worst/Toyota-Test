@@ -102,7 +102,7 @@ function DeleteUser() {
       <Alert show={successAlert} variant='success' onClose={() => setSuccessAlert(false)} dismissible>
         <Alert.Heading>Success!!</Alert.Heading>
         <p>
-        Delete a member from the database.
+        Deleted a member from the database.
         </p>
       </Alert>
     <Dropdown onClick={fetchUsers}>
