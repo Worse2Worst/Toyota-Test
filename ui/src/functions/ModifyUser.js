@@ -13,6 +13,12 @@ function ModifyUser() {
   const [users, setUsers] = useState([]);
   const [alert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState([]);
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [ID, setID] = useState(-1);
+  const [newName, setNewName] = useState("");
+  const [dropDownValue, setDropDownValue] = useState("Please select id to modify the user's name...");
+
+  const onNameInput = ({target:{value}}) => setNewName(value);
 
   const fetchUsers = async () => {
     try {
@@ -35,22 +41,89 @@ function ModifyUser() {
     fetchUsers();
   }, [])
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(ID);
+    if (ID === -1) {
+      setAlertMessage("Please select an ID to Modify!!");
+      setAlert(true);
+      return;
+    }
+
+    if (newName.trim() === "") {
+      setAlertMessage("Please input new name!!");
+      setAlert(true);
+      return;
+    }
+    // Calling the API
+
+    const jsonBody = {
+      'id': ID,
+      'name': newName
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        'type': 'mod'
+      }
+    }
+    try {
+      const response = await api.post('/users', jsonBody, config);
+      if (response.data.hasOwnProperty("error")) {
+        setAlertMessage(response.data.error);
+        setAlert(true);
+      } else {
+        setSuccessAlert(true);
+      }
+    } catch (err) {
+        if (err.response) {
+          // Not in the 200 response range 
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+          setAlertMessage(err.response);
+          setAlert(true)
+        } else {
+          console.log(`Error: ${err.message}`);
+          setAlertMessage(err.message);
+          setAlert(true);
+        }
+    }
+  }
+
   return (
     <div className='app'>
     <div className='card'>
     <Card>
     <Card.Header>Modify User's Name</Card.Header>
     <Card.Body>
-    <Dropdown>
+
+    <Alert show={alert} variant='danger' onClose={() => setAlert(false)} dismissible>
+      <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+      <p>
+      {alertMessage}
+      </p>
+      </Alert>
+
+      <Alert show={successAlert} variant='success' onClose={() => setSuccessAlert(false)} dismissible>
+        <Alert.Heading>Success!!</Alert.Heading>
+        <p>
+        Changed the name of member ID: {ID} to {newName}.
+        </p>
+      </Alert>
+
+    <Dropdown onClick={fetchUsers}>
       <Dropdown.Toggle variant="light" id="dropdown-basic">
-        Please select id to modify the user's name
+        {dropDownValue}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
          {users.map(user => {
           return (
-        // <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item>{user.id}</Dropdown.Item>
+        <Dropdown.Item onClick={() => {setID(user.id); setDropDownValue(user.id); }}> {user.id} </Dropdown.Item>
           )
          })}
       </Dropdown.Menu>
@@ -58,12 +131,11 @@ function ModifyUser() {
 
     <Form>
       <Form.Group className="mb-3" controlId="formModifyName">
-          <Form.Control type="text" placeholder="Please input the new name..." />
+          <Form.Control type="text" placeholder="Please input the new name..." onChange={onNameInput}/>
         </Form.Group>
     </Form>
-    {/* DROP DOWN  */}
 
-    <Button variant="warning" type="submit">
+    <Button variant="warning" type="submit" onClick={handleSubmit}>
         Modify User Name
     </Button>
     </Card.Body>

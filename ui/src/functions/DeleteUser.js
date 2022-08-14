@@ -106,7 +106,6 @@ function DeleteUser() {
         </p>
       </Alert>
     <Dropdown onClick={fetchUsers}>
-    {/* <Dropdown onSelect={onIDInput} onClick={(e) => this.changeValue(e.target.textContent)}> */}
       <Dropdown.Toggle variant="light" id="dropdown-basic">
         {dropDownValue}
       </Dropdown.Toggle>
