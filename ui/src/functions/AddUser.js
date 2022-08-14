@@ -2,9 +2,30 @@ import '../App.css';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../api/axios';
+
 
 function AddUser() {
+  
+  const [users, setUsers] = useState([]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await api.get('/users?id=all');
+      setUsers(response.data);
+    } catch (err) {
+      if (err.response) {
+        // Not in the 200 response range 
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(`Error: ${err.message}`);
+      }
+    }
+  }
+
   return (
     <div className='app'>
     <div className='card'>

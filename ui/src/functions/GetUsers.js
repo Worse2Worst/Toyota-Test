@@ -1,13 +1,13 @@
 import '../App.css';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
 import React, { useState, useEffect } from 'react';
 import UsersList from './UsersList';
 import api from '../api/axios';
 
 
 function GetUsers() {
+
   const [users, setUsers] = useState([]);
 
   const fetchUsers = async () => {

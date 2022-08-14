@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
+import re
+
 
 app = Flask(__name__)
 CORS(app)
@@ -58,6 +60,10 @@ def update_user():
         email = request.json.get('email')
         if not name or not email:
             error_message = 'Please specify "name" and "email" fields.'
+            return {"error": error_message}
+        email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if not (re.fullmatch(email_regex, email)):
+            error_message = 'Email format is invalid'
             return {"error": error_message}
         return add_user(name, email)
 
