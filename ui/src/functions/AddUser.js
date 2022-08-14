@@ -26,6 +26,21 @@ function AddUser() {
     }
   }
 
+  useEffect(() => {
+    fetchUsers();
+  }, [])
+
+  let state = {
+    name: "",
+    email: ""
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(state.name);
+    console.log(state.email);
+  }
+
   return (
     <div className='app'>
     <div className='card'>
