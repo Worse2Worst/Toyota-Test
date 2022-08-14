@@ -13,6 +13,7 @@ CORS(app)
 database_url = os.environ.get('DATABASE_URL', 'postgresql://postgres:password@localhost/toyota_test_db')
 if 'postgres://' in database_url:
     database_url = database_url.replace('postgres://', 'postgresql://')
+
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -131,3 +132,4 @@ def serve():
 if __name__ == '__main__':
     debug = (os.environ.get('ENVIRONEMENT') != 'production')
     app.run(debug=debug)
+
