@@ -5,16 +5,15 @@ from flask_cors import CORS, cross_origin
 from sqlalchemy.exc import IntegrityError
 import re
 import os
-import json
-import sys
-
 
 app = Flask(__name__, static_folder='../build', static_url_path='')
 CORS(app)
 
-local_db_info = json.load(open(os.path.join(sys.path[0], 'local_database.json')))
-local_db_url = f'postgresql://{local_db_info["username"]}:' \
-               f'{local_db_info["password"]}@{local_db_info["host"]}/{local_db_info["database"]}'
+db_user = 'postgres'
+db_password = 'password'
+db_host = 'localhost'
+local_db = 'toyota_test_db'
+local_db_url = f'postgresql://{db_user}:{db_password}@{db_host }/{local_db}'
 
 database_url = os.environ.get('DATABASE_URL', local_db_url)
 if 'postgres://' in database_url:

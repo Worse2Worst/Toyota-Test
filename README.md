@@ -13,7 +13,7 @@ The main page can be accessed at https://toyota-fullstack-test.herokuapp.com/ind
 ## Local version (on your machine):
 1. Use the command "pip install -r requirements.txt" to install Python's dependencies.
 2. Use the command "npm install" to install Javascript's dependencies.
-3. Create a postgresql database with columns {id, name, **email**}, put database information in api/local_database.json
+3. Create a postgresql database with columns {id, name, **email**}, put database information in api/app.py
 4. Change directory to api, then use the command "python app.py" to run the backend application.
 5. From the root directory of the project, use the command "npm start" to run the frontend application.
 6. Access the UI by http://localhost:3000/, access the API by http://127.0.0.1:5000/v1/ (eg. http://127.0.0.1:5000/v1/users?id=all)
