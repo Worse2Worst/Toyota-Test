@@ -5,12 +5,18 @@ from flask_cors import CORS, cross_origin
 from sqlalchemy.exc import IntegrityError
 import re
 import os
+import json
+import sys
 
 
 app = Flask(__name__, static_folder='../build', static_url_path='')
 CORS(app)
 
-database_url = os.environ.get('DATABASE_URL', 'postgresql://postgres:password@localhost/toyota_test_db')
+local_db_info = json.load(open(os.path.join(sys.path[0], 'local_database.json')))
+local_db_url = f'postgresql://{local_db_info["username"]}:' \
+               f'{local_db_info["password"]}@{local_db_info["host"]}/{local_db_info["database"]}'
+
+database_url = os.environ.get('DATABASE_URL', local_db_url)
 if 'postgres://' in database_url:
     database_url = database_url.replace('postgres://', 'postgresql://')
 
@@ -28,7 +34,7 @@ class Users(db.Model):
 
     def __init__(self, name, email) -> None:
         super().__init__()
-        self.name= name
+        self.name = name
         self.email = email
 
 
@@ -36,11 +42,12 @@ class UserSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'email')
 
+
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
 
-@app.route('/v1/users', methods = ['GET'])
+@app.route('/v1/users', methods=['GET'])
 @cross_origin()
 def get_users():
     requested_id = request.args.get('id', None)
@@ -53,7 +60,7 @@ def get_users():
         return user_schema.jsonify(user)
 
 
-@app.route('/v1/users', methods = ['POST'])
+@app.route('/v1/users', methods=['POST'])
 @cross_origin()
 def update_user():
     operation = request.args.get('type', None)
@@ -90,7 +97,6 @@ def update_user():
         return delete_user(requested_id)
     
 
-
 def add_user(name, email):
     users = Users(name, email)
     try:
@@ -113,6 +119,7 @@ def modify_user(requested_id, new_name):
     db.session.commit()
     return user_schema.jsonify(user)
 
+
 def delete_user(requested_id):
     user = Users.query.get(requested_id)
     if not user:
@@ -123,6 +130,7 @@ def delete_user(requested_id):
     db.session.commit()
     return user_schema.jsonify(user)
 
+
 @app.route('/')
 @cross_origin()
 def serve():
@@ -130,6 +138,6 @@ def serve():
     
     
 if __name__ == '__main__':
-    debug = (os.environ.get('ENVIRONEMENT') != 'production')
+    debug = (os.environ.get('ENVIRONMENT') != 'production')
     app.run(debug=debug)
 
